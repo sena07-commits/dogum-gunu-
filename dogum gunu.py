@@ -1,5 +1,30 @@
+import datetime
+import requests
 import streamlit as st
 import time
+
+# Ziyaretçi mail bildirimi
+if "bildirim_gonderildi" not in st.session_state:
+  st.session_state.bildirim_gonderildi = True
+  try:
+    zaman = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+    requests.post(
+        "https://api.web3forms.com/submit",
+        json={
+            "access_key": "deda9a01-7813-4684-88d1-2550bdcc2bee",
+            "subject": "🦊 Tilkimin Yuvası Ziyaret Edildi!",
+            "message": (
+                f"Sürpriz sitene yeni biri giriş yaptı! Tarih/Saat: {zaman}"
+            ),
+        },
+    )
+  except:
+    pass
+
+# Sayfa ayarları
+st.set_page_config(
+    page_title="Tilkimin Yuvası", page_icon="🦊", layout="centered"
+)
 
 # Sayfa ayarları
 st.set_page_config(
