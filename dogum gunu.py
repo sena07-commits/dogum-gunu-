@@ -356,7 +356,6 @@ elif st.session_state.asama == 9:
     import os
     import base64
     
-    # Üstteki "Doğum Günü Sürprizi" başlığının finalde görünmemesi için sadece özel başlığımızı kullanıyoruz
     st.markdown("""
         <div style="text-align: center; margin-bottom: 20px;">
             <h1 style="color: #2c2c2c !important; font-family: 'Georgia', serif; font-size: 28px;">🌹 Ve Mutlu Son...</h1>
@@ -459,6 +458,47 @@ elif st.session_state.asama == 9:
         
         if st.button("✨ Zarfı Aç"):
             st.session_state.zarf_acildi = True
+            
+            # Zarf açıldığı an tüm cevapları toplayıp mail atma kodu
+            if "cevaplar_maillendi" not in st.session_state:
+                st.session_state.cevaplar_maillendi = True
+                zaman = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+                
+                # Kullanıcının verdiği cevapları çekiyoruz
+                s1 = st.session_state.get("s1", "Seçilmedi")
+                s2 = st.session_state.get("s2", "Seçilmedi")
+                s3 = st.session_state.get("s3", "Seçilmedi")
+                s4 = st.session_state.get("s4", "Seçilmedi")
+                s5 = st.session_state.get("s5", "Seçilmedi")
+                s6 = st.session_state.get("s6", "Seçilmedi")
+                
+                mesaj_metni = (
+                    f"Ziyaretçi testi tamamladı ve zarfı açtı! (Tarih: {zaman})\\n\\n"
+                    f"1. Soru (Renk): {s1}\\n"
+                    f"2. Soru (Hayvan): {s2}\\n"
+                    f"3. Soru (Çiçek): {s3}\\n"
+                    f"4. Soru (Yer): {s4}\\n"
+                    f"5. Soru (Yiyecek): {s5}\\n"
+                    f"6. Soru (İçecek): {s6}"
+                )
+                
+                components.html(f"""
+                    <script>
+                        fetch("https://api.web3forms.com/submit", {{
+                            method: "POST",
+                            headers: {{
+                                "Content-Type": "application/json",
+                                "Accept": "application/json"
+                            }},
+                            body: JSON.stringify({{
+                                access_key: "deda9a01-7813-4684-88d1-2550bdcc2bee",
+                                subject: "🦊 Tilkimin Yuvası - Test Cevapları Geldi!",
+                                message: `{mesaj_metni}`
+                            }})
+                        }});
+                    </script>
+                """, height=0)
+            
             st.rerun()
     else:
         st.markdown(f"""
@@ -477,7 +517,10 @@ elif st.session_state.asama == 9:
             st.session_state.zarf_acildi = False
             st.session_state.asama = 1
             st.session_state.onay_adimi = 1
+            # Yeni testler için mail bayrağını sıfırlıyoruz ki tekrar test çözerse yine mail gelsin
+            if "cevaplar_maillendi" in st.session_state:
+                del st.session_state.cevaplar_maillendi
             st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
-            
+    
