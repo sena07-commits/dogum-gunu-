@@ -2,16 +2,19 @@ import datetime
 import streamlit as st
 import streamlit.components.v1 as components
 import time
+from zoneinfo import ZoneInfo
 
 # 1. Sayfa ayarları (Mutlaka en başta olmalı!)
 st.set_page_config(
     page_title="Tilkimin Yuvası", page_icon="🦊", layout="centered"
 )
 
-# Ziyaretçi siteye girdiğinde çalışan kesin bildirim
+# --- BURAYA EKLEYECEKSİN ---
 if "bildirim_gonderildi" not in st.session_state:
   st.session_state.bildirim_gonderildi = True
-  zaman = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+  zaman = datetime.datetime.now(ZoneInfo("Europe/Istanbul")).strftime(
+      "%d.%m.%Y %H:%M"
+  )
 
   components.html(
       f"""
