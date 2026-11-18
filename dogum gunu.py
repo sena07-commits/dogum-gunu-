@@ -5,6 +5,18 @@ import time
 st.set_page_config(
     page_title="Tilkimin Yuvası", page_icon="🦊", layout="centered"
 )
+
+# Parşömen / Arka Plan Tasarımı
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #f4ecd8;
+        color: #2c221e;
+        font-family: 'Georgia', serif;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Arka plan müziği
 st.audio("sarki.mp3", format="audio/mp3", loop=True)
 # OTURUM DURUMU
