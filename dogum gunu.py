@@ -3,7 +3,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import time
 from zoneinfo import ZoneInfo
-import base64  # En üste bunu eklediğinden emin ol
+import base64  # En üste ekli olduğundan emin ol
 
 # 1. Sayfa ayarları (Mutlaka en başta olmalı!)
 st.set_page_config(
@@ -51,27 +51,36 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- MÜZİK ÇUBUĞU VE YANINDAKİ LUFFY ---
-col_muzik, col_luffy = st.columns([5, 1])
+# --- SOL KENARDA SABİT DURAN LUFFY (.png) ---
+luffy_tag = ""
+try:
+  with open("luffy.png", "rb") as f:  # Dosya adının luffy.png olduğundan emin ol
+    encoded_luffy = base64.b64encode(f.read()).decode()
+    luffy_tag = (
+        f'<img src="data:image/png;base64,{encoded_luffy}" class="luffy-sol">'
+    )
+except Exception:
+  pass
 
-with col_muzik:
-  st.audio("sarki.mp3", format="audio/mp3", loop=True)
-
-with col_luffy:
-  try:
-    with open("luffy.jpeg", "rb") as f:
-      encoded_luffy = base64.b64encode(f.read()).decode()
-      st.markdown(
-          f"""
-                <div style="display: flex; align-items: flex-end; justify-content: center; height: 100%; padding-top: 5px;">
-                    <img src="data:image/jpeg;base64,{encoded_luffy}" style="width: 70px; max-width: 100%; filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.3));">
-                </div>
-            """,
-          unsafe_allow_html=True,
-      )
-  except Exception:
-    pass
-# --------------------------------------
+st.markdown(
+    f"""
+    <style>
+    .luffy-sol {{
+        position: fixed;
+        bottom: 0px;
+        left: 0px; 
+        width: 120px; 
+        z-index: 9999;
+        pointer-events: none; /* Arkasındaki butonların tıklanmasını engellemez */
+        filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.3));
+    }}
+    </style>
+    
+    {luffy_tag}
+""",
+    unsafe_allow_html=True,
+)
+# ---------------------------------------------
 
 # OTURUM DURUMU
 if "asama" not in st.session_state:
