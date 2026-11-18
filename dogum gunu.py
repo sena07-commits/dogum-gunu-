@@ -51,7 +51,7 @@ st.markdown("""
 # Arka plan müziği (Yerinde duruyor)
 st.audio("sarki.mp3", format="audio/mp3", loop=True)
 
-# --- SOL KENARDA SABİT DURAN LUFFY (.png) ---
+# --- SOL KENARDA SABİT DURAN KÜÇÜLTÜLMÜŞ LUFFY (.png) ---
 luffy_tag = ""
 try:
     with open("luffy.png", "rb") as f:
@@ -66,7 +66,7 @@ st.markdown(f"""
         position: fixed;
         bottom: 15px;
         left: 15px; 
-        width: 110px; 
+        width: 85px; /* Boyutu biraz daha küçültüldü */
         z-index: 9999;
         pointer-events: none; 
         filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.3));
@@ -75,6 +75,7 @@ st.markdown(f"""
     
     {luffy_tag}
 """, unsafe_allow_html=True)
+# ---------------------------------------------
 
 # OTURUM DURUMU
 if "asama" not in st.session_state:
