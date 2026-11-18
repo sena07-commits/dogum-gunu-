@@ -8,31 +8,6 @@ st.set_page_config(
     page_title="Tilkimin Yuvası", page_icon="🦊", layout="centered"
 )
 
-# 2. Ziyaretçi mail bildirimi (Tarayıcı üzerinden, 403 hatasını aşar)
-if "bildirim_gonderildi" not in st.session_state:
-  st.session_state.bildirim_gonderildi = True
-  zaman = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
-
-  components.html(
-      f"""
-        <script>
-            fetch("https://api.web3forms.com/submit", {{
-                method: "POST",
-                headers: {{
-                    "Content-Type": "application/json",
-                    "Accept": "application/json"
-                }},
-                body: JSON.stringify({{
-                    access_key: "deda9a01-7813-4684-88d1-2550bdcc2bee",
-                    subject: "🦊 Tilkimin Yuvası Ziyaret Edildi!",
-                    message: "Sürpriz sitene yeni biri giriş yaptı! Tarih/Saat: {zaman}"
-                }})
-            }});
-        </script>
-    """,
-      height=0,
-  )
-
 # Parşömen / Arka Plan Tasarımı
 st.markdown("""
     <style>
