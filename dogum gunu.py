@@ -38,8 +38,7 @@ if "bildirim_gonderildi" not in st.session_state:
   )
 
 # Parşömen / Arka Plan Tasarımı
-st.markdown(
-    """
+st.markdown("""
     <style>
     .stApp {
         background-color: #f4ecd8;
@@ -47,43 +46,35 @@ st.markdown(
         font-family: 'Georgia', serif;
     }
     </style>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
-# --- MÜZİK ÇUBUĞU (Kendi yerinde normal duruyor) ---
+# Arka plan müziği (Yerinde duruyor)
 st.audio("sarki.mp3", format="audio/mp3", loop=True)
 
-# --- SOL KENARDA SABİT DURAN LUFFY ---
+# --- SOL KENARDA SABİT DURAN LUFFY (.png) ---
 luffy_tag = ""
 try:
-  with open("luffy.jpeg", "rb") as f:
-    encoded_luffy = base64.b64encode(f.read()).decode()
-    luffy_tag = (
-        f'<img src="data:image/jpeg;base64,{encoded_luffy}" class="luffy-sol">'
-    )
+    with open("luffy.png", "rb") as f:
+        encoded_luffy = base64.b64encode(f.read()).decode()
+        luffy_tag = f'<img src="data:image/png;base64,{encoded_luffy}" class="luffy-sol">'
 except Exception:
-  pass
+    pass
 
-st.markdown(
-    f"""
+st.markdown(f"""
     <style>
     .luffy-sol {{
         position: fixed;
-        bottom: 10px;
-        left: 10px; 
+        bottom: 15px;
+        left: 15px; 
         width: 110px; 
         z-index: 9999;
-        pointer-events: none; /* Arkadaki butonlara tıklamayı engellemez */
+        pointer-events: none; 
         filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.3));
     }}
     </style>
     
     {luffy_tag}
-""",
-    unsafe_allow_html=True,
-)
-# ---------------------------------------------
+""", unsafe_allow_html=True)
 
 # OTURUM DURUMU
 if "asama" not in st.session_state:
