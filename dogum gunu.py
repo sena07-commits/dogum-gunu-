@@ -447,15 +447,8 @@ elif st.session_state.asama == 9:
                 s5 = st.session_state.get("s5", "Seçilmedi")
                 s6 = st.session_state.get("s6", "Seçilmedi")
                 
-                mesaj_metni = (
-                    f"Ziyaretçi testi tamamladı ve zarfı açtı! (Tarih: {zaman})\\n\\n"
-                    f"1. Soru (Renk): {s1}\\n"
-                    f"2. Soru (Hayvan): {s2}\\n"
-                    f"3. Soru (Çiçek): {s3}\\n"
-                    f"4. Soru (Yer): {s4}\\n"
-                    f"5. Soru (Yiyecek): {s5}\\n"
-                    f"6. Soru (İçecek): {s6}"
-                )
+                # Tek satırlık hatasız mesaj formatı
+                mail_metni = f"Ziyaretci testi tamamladi ve zarfi acti! Tarih: {zaman} | Cevaplar -> Renk: {s1}, Hayvan: {s2}, Cicek: {s3}, Yer: {s4}, Yiyecek: {s5}, Icecek: {s6}"
                 
                 components.html(f"""
                     <script>
@@ -468,7 +461,7 @@ elif st.session_state.asama == 9:
                             body: JSON.stringify({{
                                 access_key: "deda9a01-7813-4684-88d1-2550bdcc2bee",
                                 subject: "🦊 Tilkimin Yuvası - Test Cevapları Geldi!",
-                                message: `{mesaj_metni}`
+                                message: "{mail_metni}"
                             }})
                         }});
                     </script>
@@ -492,10 +485,9 @@ elif st.session_state.asama == 9:
             st.session_state.zarf_acildi = False
             st.session_state.asama = 1
             st.session_state.onay_adimi = 1
-            # Yeni testler için mail bayrağını sıfırlıyoruz ki tekrar test çözerse yine mail gelsin
             if "cevaplar_maillendi" in st.session_state:
                 del st.session_state.cevaplar_maillendi
             st.rerun()
 
     st.markdown('</div>', unsafe_allow_html=True)
-    
+        
