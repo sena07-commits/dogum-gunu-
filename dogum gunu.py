@@ -3,13 +3,14 @@ import streamlit as st
 import streamlit.components.v1 as components
 import time
 from zoneinfo import ZoneInfo
+import base64  # En üste bunu eklediğinden emin ol
 
 # 1. Sayfa ayarları (Mutlaka en başta olmalı!)
 st.set_page_config(
     page_title="Tilkimin Yuvası", page_icon="🦊", layout="centered"
 )
 
-# --- BURAYA EKLEYECEKSİN ---
+# Ziyaretçi siteye girdiğinde çalışan kesin bildirim
 if "bildirim_gonderildi" not in st.session_state:
   st.session_state.bildirim_gonderildi = True
   zaman = datetime.datetime.now(ZoneInfo("Europe/Istanbul")).strftime(
@@ -37,7 +38,8 @@ if "bildirim_gonderildi" not in st.session_state:
   )
 
 # Parşömen / Arka Plan Tasarımı
-st.markdown("""
+st.markdown(
+    """
     <style>
     .stApp {
         background-color: #f4ecd8;
@@ -45,14 +47,35 @@ st.markdown("""
         font-family: 'Georgia', serif;
     }
     </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
-# Arka plan müziği
-st.audio("sarki.mp3", format="audio/mp3", loop=True)
+# --- MÜZİK ÇUBUĞU VE YANINDAKİ LUFFY ---
+col_muzik, col_luffy = st.columns([5, 1])
+
+with col_muzik:
+  st.audio("sarki.mp3", format="audio/mp3", loop=True)
+
+with col_luffy:
+  try:
+    with open("luffy.jpeg", "rb") as f:
+      encoded_luffy = base64.b64encode(f.read()).decode()
+      st.markdown(
+          f"""
+                <div style="display: flex; align-items: flex-end; justify-content: center; height: 100%; padding-top: 5px;">
+                    <img src="data:image/jpeg;base64,{encoded_luffy}" style="width: 70px; max-width: 100%; filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.3));">
+                </div>
+            """,
+          unsafe_allow_html=True,
+      )
+  except Exception:
+    pass
+# --------------------------------------
+
 # OTURUM DURUMU
 if "asama" not in st.session_state:
-    st.session_state.asama = 1
-
+  st.session_state.asama = 1
 # AŞAMAYA GÖRE DİNAMİK BAŞLIKLAR
 if st.session_state.asama <= 6:
     baslik = "Test"
