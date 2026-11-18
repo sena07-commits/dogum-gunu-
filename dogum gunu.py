@@ -1,6 +1,6 @@
 import datetime
-import requests
 import streamlit as st
+import streamlit.components.v1 as components
 import time
 
 # 1. Sayfa ayarları (Mutlaka en başta olmalı!)
@@ -8,27 +8,30 @@ st.set_page_config(
     page_title="Tilkimin Yuvası", page_icon="🦊", layout="centered"
 )
 
-# 2. Ziyaretçi mail bildirimi (Hata ayıklama modlu)
+# 2. Ziyaretçi mail bildirimi (Tarayıcı üzerinden, 403 hatasını aşar)
 if "bildirim_gonderildi" not in st.session_state:
   st.session_state.bildirim_gonderildi = True
-  try:
-    zaman = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
-    url = "https://api.web3forms.com/submit"
-    payload = {
-        "access_key": "deda9a01-7813-4684-88d1-2550bdcc2bee",
-        "subject": "🦊 Tilkimin Yuvası Ziyaret Edildi!",
-        "message": f"Sürpriz sitene yeni biri giriş yaptı! Tarih/Saat: {zaman}",
-    }
-    response = requests.post(url, json=payload, timeout=5)
+  zaman = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
 
-    if response.status_code == 200:
-      st.toast("📧 Bildirim başarıyla gönderildi!", icon="✅")
-    else:
-      st.warning(f"Mail gönderilemedi, kod: {response.status_code}")
-  except Exception as e:
-    st.error(f"Bağlantı hatası: {e}")
-
-# (Buradan sonra senin yazdığın parşömen tasarımı, müzik ve aşama kodların aynen devam ediyor...)
+  components.html(
+      f"""
+        <script>
+            fetch("https://api.web3forms.com/submit", {{
+                method: "POST",
+                headers: {{
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }},
+                body: JSON.stringify({{
+                    access_key: "deda9a01-7813-4684-88d1-2550bdcc2bee",
+                    subject: "🦊 Tilkimin Yuvası Ziyaret Edildi!",
+                    message: "Sürpriz sitene yeni biri giriş yaptı! Tarih/Saat: {zaman}"
+                }})
+            }});
+        </script>
+    """,
+      height=0,
+  )
 
 # Parşömen / Arka Plan Tasarımı
 st.markdown("""
