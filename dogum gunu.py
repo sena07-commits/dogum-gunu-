@@ -3,7 +3,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import time
 from zoneinfo import ZoneInfo
-import base64  # En üste ekli olduğundan emin ol
+import base64
 
 # 1. Sayfa ayarları (Mutlaka en başta olmalı!)
 st.set_page_config(
@@ -51,13 +51,16 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- SOL KENARDA SABİT DURAN LUFFY (.png) ---
+# --- MÜZİK ÇUBUĞU (Kendi yerinde normal duruyor) ---
+st.audio("sarki.mp3", format="audio/mp3", loop=True)
+
+# --- SOL KENARDA SABİT DURAN LUFFY ---
 luffy_tag = ""
 try:
-  with open("luffy.png", "rb") as f:  # Dosya adının luffy.png olduğundan emin ol
+  with open("luffy.jpeg", "rb") as f:
     encoded_luffy = base64.b64encode(f.read()).decode()
     luffy_tag = (
-        f'<img src="data:image/png;base64,{encoded_luffy}" class="luffy-sol">'
+        f'<img src="data:image/jpeg;base64,{encoded_luffy}" class="luffy-sol">'
     )
 except Exception:
   pass
@@ -67,11 +70,11 @@ st.markdown(
     <style>
     .luffy-sol {{
         position: fixed;
-        bottom: 0px;
-        left: 0px; 
-        width: 120px; 
+        bottom: 10px;
+        left: 10px; 
+        width: 110px; 
         z-index: 9999;
-        pointer-events: none; /* Arkasındaki butonların tıklanmasını engellemez */
+        pointer-events: none; /* Arkadaki butonlara tıklamayı engellemez */
         filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.3));
     }}
     </style>
